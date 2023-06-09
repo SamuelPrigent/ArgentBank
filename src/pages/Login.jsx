@@ -1,13 +1,10 @@
-// style
-import "../style/ArgentBank.css";
-import "../style/index.css";
 // router link
 import { Link } from "react-router-dom"; // assets
 import argentBankLogo from "../assets/argentBankLogo.png";
 
 function Login() {
   return (
-    <div>
+    <div className="body">
       {/* Need Bootstrap for "fa" classes */}
       <nav className="main-nav">
         <Link className="main-nav-logo" to="/">
@@ -18,11 +15,10 @@ function Login() {
           />
           <h1 className="sr-only">Argent Bank</h1>
         </Link>
-
         <div>
           <Link className="main-nav-item" to="/login">
             <i className="fa fa-user-circle"></i>
-            Sign In
+            {" Sign In "}
           </Link>
         </div>
       </nav>

@@ -1,8 +1,5 @@
 // router
 import { Route, Routes } from "react-router-dom";
-// style
-import "./style/index.css";
-import "./style/ArgentBank.css";
 // pages
 import Home from "./pages/Home.jsx";
 import Login from "./pages/Login.jsx";

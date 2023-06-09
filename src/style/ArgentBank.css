@@ -1,12 +1,26 @@
-/* j'aurais besoins d'une max-width sur un container */
-#root {
-  max-width: 1600px;
-  text-align: center;
-  /* margin: 0 auto; */
-  height: 100%;
-  width: 100%;
+/* my css */
+@font-face {
+  font-family: "Avenir";
+  src: url("../assets/Avenir.ttc") format("truetype");
+  font-weight: 400;
+  font-style: normal;
 }
 
+@font-face {
+  font-family: "Avenir";
+  src: url("../assets/AvenirHeavy.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  min-height: 100vh;
+}
+
+/* Original css */
 html {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -23,15 +37,11 @@ body {
 }
 
 .main {
-  display: flex;
-  flex-direction: column;
   flex: 1;
 }
 
 .bg-dark {
   background-color: #12002b;
-  /* me */
-  min-height: 80vh;
 }
 
 .sr-only {
@@ -83,6 +93,7 @@ body {
   width: 200px;
 }
 
+/* source change */
 .hero {
   background-image: url("../assets/bank-tree.jpeg");
   background-position: 0 -50px;
@@ -176,6 +187,8 @@ body {
   border-color: #00bc77;
   background-color: #00bc77;
   color: #fff;
+  /* fix pb de padding */
+  box-sizing: border-box;
 }
 
 .sign-in-content {
@@ -184,7 +197,6 @@ body {
   width: 300px;
   margin: 0 auto;
   margin-top: 3rem;
-  margin-bottom: 3rem;
   padding: 2rem;
 }
 

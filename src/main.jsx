@@ -7,8 +7,7 @@ import { BrowserRouter } from "react-router-dom";
 // utils
 import ScrollToTop from "./utils/ScrollToTop.jsx";
 // style
-import "./style/index.css";
-import "./style/ArgentBank.css";
+// import "./style/ArgentBank.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>

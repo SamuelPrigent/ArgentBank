@@ -1,6 +1,3 @@
-// style
-import "../style/ArgentBank.css";
-import "../style/index.css";
 // router link
 import { Link } from "react-router-dom";
 // assets
@@ -8,7 +5,7 @@ import argentBankLogo from "../assets/argentBankLogo.png";
 
 function Profile() {
   return (
-    <div>
+    <div className="body">
       {/* Need Bootstrap for "fa" classes */}
       <nav className="main-nav">
         <Link className="main-nav-logo" to="/">
@@ -23,12 +20,12 @@ function Profile() {
         <div>
           <Link className="main-nav-item" to="/profile">
             <i className="fa fa-user-circle"></i>
-            Tony
+            {" Tony "}
           </Link>
 
           <Link className="main-nav-item" to="/">
             <i className="fa fa-sign-out"></i>
-            Sign Out
+            {" Sign Out "}
           </Link>
         </div>
       </nav>
