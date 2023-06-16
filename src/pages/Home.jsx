@@ -12,7 +12,7 @@ import { useDispatch } from "react-redux";
 import auth_service from "../services/authService.jsx";
 
 function Home() {
-  document.title = "Argent Bank - Home";
+  document.title = "Home - Argent Bank";
   const navigate = useNavigate();
   const token = useSelector((state) => state.login.token);
   const logoClick = useSelector((state) => state.login.logoClick);
