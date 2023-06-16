@@ -7,7 +7,7 @@ import iconMoney from "../assets/icon-money.png";
 import iconSecurity from "../assets/icon-security.png";
 // components
 import Nav from "../components/nav.jsx";
-// REFRESH NAV solution without redirection
+// REFRESH NAV without redirection
 import { useDispatch } from "react-redux";
 import { isToken } from "../slices/loginSlice.js";
 import auth_service from "../services/authService.jsx";
@@ -16,8 +16,7 @@ function Home() {
   const navigate = useNavigate();
   const token = useSelector((state) => state.login.token);
   const logoClick = useSelector((state) => state.login.logoClick);
-  // No redirection auto si j'ai logo Click
-  const dispatch = useDispatch(); // REFRESH NAV solution without redirection
+  const dispatch = useDispatch(); // REFRESH NAV without redirection
   useEffect(() => {
     if (
       (token !== null ||
@@ -25,11 +24,11 @@ function Home() {
         sessionStorage.getItem("token") !== null) &&
       logoClick !== true
     ) {
-      // navigate("/profile"); // (comment) for REFRESH NAV solution without redirection
+      // navigate("/profile"); // (comment) for REFRESH NAV without redirection
     } else if (logoClick === true) {
       navigate("/");
     }
-    // REFRESH NAV solution without redirection
+    // REFRESH NAV without redirection
     if (
       token !== null ||
       localStorage.getItem("token") !== null ||
@@ -38,19 +37,8 @@ function Home() {
       dispatch(isToken());
       dispatch(auth_service.userProfile(token));
     }
+    //
   }, [token, navigate, logoClick, dispatch]);
-
-  // Solution to refresh nav without Logoclick & redirection
-  // const dispatch = useDispatch();
-  // if (
-  //   token !== null ||
-  //   localStorage.getItem("token") !== null ||
-  //   sessionStorage.getItem("token") !== null
-  // ) {
-  //   // dispatch(loginSuccess());
-  //   dispatch(isToken());
-  //   dispatch(auth_service.userProfile(token));
-  // }
 
   return (
     <div className="body">
