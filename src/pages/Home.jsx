@@ -1,38 +1,67 @@
-// router link
-import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 // assets
-import argentBankLogo from "../assets/argentBankLogo.png";
 import iconChat from "../assets/icon-chat.png";
 import iconMoney from "../assets/icon-money.png";
 import iconSecurity from "../assets/icon-security.png";
+// components
+import Nav from "../components/nav.jsx";
+// REFRESH NAV solution without redirection
+import { useDispatch } from "react-redux";
+import { isToken } from "../slices/loginSlice.js";
+import auth_service from "../services/authService.jsx";
 
 function Home() {
+  const navigate = useNavigate();
+  const token = useSelector((state) => state.login.token);
+  const logoClick = useSelector((state) => state.login.logoClick);
+  // No redirection auto si j'ai logo Click
+  const dispatch = useDispatch(); // REFRESH NAV solution without redirection
+  useEffect(() => {
+    if (
+      (token !== null ||
+        (localStorage.getItem("token") !== null && logoClick !== true) ||
+        sessionStorage.getItem("token") !== null) &&
+      logoClick !== true
+    ) {
+      // navigate("/profile"); // (comment) for REFRESH NAV solution without redirection
+    } else if (logoClick === true) {
+      navigate("/");
+    }
+    // REFRESH NAV solution without redirection
+    if (
+      token !== null ||
+      localStorage.getItem("token") !== null ||
+      sessionStorage.getItem("token") !== null
+    ) {
+      dispatch(isToken());
+      dispatch(auth_service.userProfile(token));
+    }
+  }, [token, navigate, logoClick, dispatch]);
+
+  // Solution to refresh nav without Logoclick & redirection
+  // const dispatch = useDispatch();
+  // if (
+  //   token !== null ||
+  //   localStorage.getItem("token") !== null ||
+  //   sessionStorage.getItem("token") !== null
+  // ) {
+  //   // dispatch(loginSuccess());
+  //   dispatch(isToken());
+  //   dispatch(auth_service.userProfile(token));
+  // }
+
   return (
     <div className="body">
-      {/* Need Bootstrap for "fa" classes */}
-      <nav className="main-nav">
-        <Link className="main-nav-logo" to="/">
-          <img
-            className="main-nav-logo-image"
-            src={argentBankLogo}
-            alt="Argent Bank Logo"
-          />
-          <h1 className="sr-only">Argent Bank</h1>
-        </Link>
-        <div>
-          <Link className="main-nav-item" to="/login">
-            <i className="fa fa-user-circle"></i>
-            {" Sign In "}
-          </Link>
-        </div>
-      </nav>
+      <Nav />
       <main>
         <div className="hero">
           <section className="hero-content">
             <h2 className="sr-only">Promoted Content</h2>
-            <p className="subtitle">No fees.</p>
-            <p className="subtitle">No minimum deposit.</p>
-            <p className="subtitle">High interest rates.</p>
+            <h2 className="subtitle">No fees.</h2>
+            <h2 className="subtitle">No minimum deposit.</h2>
+            <h2 className="subtitle">High interest rates.</h2>
             <p className="text">
               Open a savings account with Argent Bank today!
             </p>
@@ -49,7 +78,7 @@ function Home() {
             </p>
           </div>
           <div className="feature-item">
-            <img src={iconMoney} alt="Chat Icon" className="feature-icon" />
+            <img src={iconMoney} alt="Money Icon" className="feature-icon" />
             <h3 className="feature-item-title">
               More savings means higher rates
             </h3>
@@ -58,7 +87,11 @@ function Home() {
             </p>
           </div>
           <div className="feature-item">
-            <img src={iconSecurity} alt="Chat Icon" className="feature-icon" />
+            <img
+              src={iconSecurity}
+              alt="Security Icon"
+              className="feature-icon"
+            />
             <h3 className="feature-item-title">Security you can trust</h3>
             <p>
               We use top of the line encryption to make sure your data and money
@@ -67,9 +100,6 @@ function Home() {
           </div>
         </section>
       </main>
-      <footer className="footer">
-        <p className="footer-text">Copyright 2020 Argent Bank</p>
-      </footer>
     </div>
   );
 }

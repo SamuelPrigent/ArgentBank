@@ -3,17 +3,14 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 // Router
 import App from "./App.jsx";
-import { BrowserRouter } from "react-router-dom";
-// utils
-import ScrollToTop from "./utils/ScrollToTop.jsx";
-// style
-// import "./style/ArgentBank.css";
+// redux state gestion
+import { Provider } from "react-redux";
+import store from "./store/store.js";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <BrowserRouter>
+  <Provider store={store}>
+    <React.StrictMode>
       <App />
-      <ScrollToTop />
-    </BrowserRouter>
-  </React.StrictMode>
+    </React.StrictMode>
+  </Provider>
 );
