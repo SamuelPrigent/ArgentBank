@@ -40,7 +40,7 @@ function Form() {
     }
     // no alert
     setAlert({});
-    console.log("Login Success !");
+    // console.log("Login Success !");
     dispatch(auth_service.login(email, password, rememberMe));
   };
 
@@ -56,9 +56,6 @@ function Form() {
       navigate("/profile");
     }
   }, [tokenRedux, tokenLocal, tokenSession, navigate]);
-  // il n'y a jamais de token dans le localStorage lorsque je suis offline car
-  // j'enlève le token lors du logout du coup quel est le rôle du remember me ?
-  // je garde autre chose que le token ??
 
   return (
     <div>

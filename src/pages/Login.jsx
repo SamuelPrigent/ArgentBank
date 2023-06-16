@@ -3,6 +3,7 @@ import Form from "../components/form.jsx";
 import Nav from "../components/nav.jsx";
 
 function Login() {
+  document.title = "Argent Bank - Login";
   // redirection dans le composant form
   return (
     <div className="body">

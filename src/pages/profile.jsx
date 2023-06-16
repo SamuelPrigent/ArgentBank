@@ -10,6 +10,7 @@ import UserHeader from "../components/UserHeader.jsx";
 import Nav from "../components/nav.jsx";
 
 function Profile() {
+  document.title = "Argent Bank - Profile";
   // Search token
   const token = useSelector((state) => {
     const { token } = state.login;

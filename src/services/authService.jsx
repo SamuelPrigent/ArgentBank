@@ -27,11 +27,12 @@ const login = (email, password, rememberMe) => (dispatch) => {
     .post(BASE_URL + "/user/login", { email, password })
     .then((response) => {
       if (rememberMe) {
-        // Le json.stringify du token peut créer une erreur en rajoutant des ""
-        // in local storage if checked
+        // in local storage if checked + session storage
+        // si je ferme le navigateur je reste connecté tant que le token n'expire pas
         localStorage.setItem("token", response.data.body.token);
       } else {
         // session storage if not checked
+        // lorsque je ferme le navigateur je ne suis plus connecté
         sessionStorage.setItem("token", response.data.body.token);
       }
       dispatch(loginSuccess(response.data));
@@ -76,8 +77,6 @@ const userProfile = (value_token) => (dispatch) => {
  * @param { String } token
  */
 const updateProfile = (firstName, lastName, value_token) => (dispatch) => {
-  // pas de slice nécessaire je ne stringify plus le token dans le login
-  // .slice(1, localStorage.getItem("token").length - 1)
   const token =
     localStorage.getItem("token") !== null
       ? localStorage.getItem("token")
@@ -103,8 +102,8 @@ const updateProfile = (firstName, lastName, value_token) => (dispatch) => {
  * Logout function
  */
 const logout = () => (dispatch) => {
-  sessionStorage.clear();
   localStorage.removeItem("token");
+  sessionStorage.clear();
   dispatch(userLogout());
   dispatch(logoutSuccess());
 };
