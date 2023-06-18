@@ -67,10 +67,15 @@ const userProfile = (value_token) => (dispatch) => {
     })
     .catch((err) => {
       dispatch(userFail(err.response));
-      // if error with wrong token we remove it
-      // to not get "null" as data on profile page
-      localStorage.removeItem("token");
-      sessionStorage.clear();
+      if (
+        err.response.data.message === "invalid token" ||
+        err.response.data.message === "jwt expired"
+      ) {
+        // if 401 error with token we remove it
+        // console.log(`Error 401 : ${err.response.data.message}`);
+        localStorage.removeItem("token");
+        sessionStorage.clear();
+      }
     });
 };
 
