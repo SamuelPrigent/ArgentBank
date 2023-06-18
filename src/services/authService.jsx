@@ -67,6 +67,10 @@ const userProfile = (value_token) => (dispatch) => {
     })
     .catch((err) => {
       dispatch(userFail(err.response));
+      // if error with wrong token we remove it
+      // to not get "null" as data on profile page
+      localStorage.removeItem("token");
+      sessionStorage.clear();
     });
 };
 
