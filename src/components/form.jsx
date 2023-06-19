@@ -46,6 +46,9 @@ function Form() {
 
   const { msg } = alert;
 
+  // for authentification
+  const authError = useSelector((state) => state.login.error);
+
   // === Auto log if user checked "Remember me" in previous connexion ===
   const tokenRedux = useSelector((state) => state.login.token);
   const tokenLocal = localStorage.getItem("token");
@@ -90,13 +93,13 @@ function Form() {
           />
           <label htmlFor="remember-me">Remember me</label>
         </div>
-        {/* ====== Alert également en fonction du status si réponse 400 c'est affiché ====== */}
-        {/* <button className="sign-in-button">
-        {auth.loginStatus === 'pending' ? 'Submitting...' : 'Sign In'}
-      </button> */}
-        {/* {auth.status === '400' ? <p className="error">{auth.message}</p> : null} */}
         <input className="sign-in-button" type="submit" value="Sign In" />
+        {/* inputs error */}
         {msg !== null ? <Alert alert={alert} /> : ""}
+        {/* auth error */}
+        {msg == null && authError && (
+          <Alert alert={{ msg: authError, error: true }} />
+        )}
       </form>
     </div>
   );
