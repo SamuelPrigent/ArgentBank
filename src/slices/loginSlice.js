@@ -8,20 +8,22 @@ const loginState = {
   logoClick: null,
 };
 
-//Login slices
+// Login slice
 const loginSlice = createSlice({
   name: "login",
   initialState: loginState,
   reducers: {
     loginSuccess: (state, action) => {
-      state.token = action.payload.body.token;
+      const { token } = action.payload.body || {};
+      state.token = token || null;
       state.isAuth = true;
       state.error = null;
     },
     loginFail: (state, action) => {
+      const { payload } = action;
       state.token = null;
       state.isAuth = false;
-      state.error = action.payload;
+      state.error = payload || null;
     },
     logoutSuccess: (state) => {
       state.token = null;

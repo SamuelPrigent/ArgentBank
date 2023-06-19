@@ -7,7 +7,7 @@ import iconMoney from "../assets/icon-money.png";
 import iconSecurity from "../assets/icon-security.png";
 // components
 import Nav from "../components/nav.jsx";
-// REFRESH NAV without redirection
+// Refresh Nav
 import { useDispatch } from "react-redux";
 import auth_service from "../services/authService.jsx";
 
@@ -16,21 +16,9 @@ function Home() {
   const navigate = useNavigate();
   const token = useSelector((state) => state.login.token);
   const logoClick = useSelector((state) => state.login.logoClick);
-  const dispatch = useDispatch(); // REFRESH NAV without redirection
+  const dispatch = useDispatch();
+  // Refresh Nav
   useEffect(() => {
-    // If i want a redirection on /profile when i'm logged
-    // if (
-    //   (token !== null ||
-    //     (localStorage.getItem("token") !== null && logoClick !== true) ||
-    //     sessionStorage.getItem("token") !== null) &&
-    //   logoClick !== true
-    // ) {
-    //   // navigate("/profile");
-    // } else if (logoClick === true) {
-    //   navigate("/");
-    // }
-    //
-    // REFRESH NAV without redirection
     // (je ne vérifie pas ici s'il est dans le localStorage que je check uniquement sur la page login)
     if (token !== null || sessionStorage.getItem("token") !== null) {
       dispatch(auth_service.userProfile(token));

@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-//Initial user state
+// Initial user state
 const userState = {
   email: null,
   firstName: null,
@@ -9,24 +9,26 @@ const userState = {
   error: null,
 };
 
-//User slices
+// User slice
 const userSlice = createSlice({
   name: "user",
   initialState: userState,
   reducers: {
     userSuccess: (state, action) => {
-      state.email = action.payload.body.email;
-      state.firstName = action.payload.body.firstName;
-      state.lastName = action.payload.body.lastName;
-      state.id = action.payload.body.id;
+      const { email, firstName, lastName, id } = action.payload.body || {};
+      state.email = email || null;
+      state.firstName = firstName || null;
+      state.lastName = lastName || null;
+      state.id = id || null;
       state.error = null;
     },
     userFail: (state, action) => {
+      const { message } = action.payload;
       state.email = null;
       state.firstName = null;
       state.lastName = null;
       state.id = null;
-      state.error = action.payload.message;
+      state.error = message || null;
     },
     userLogout: (state) => {
       state.email = null;
@@ -36,18 +38,21 @@ const userSlice = createSlice({
       state.error = null;
     },
     userUpdateSuccess: (state, action) => {
-      state.email = action.payload.body.email;
-      state.firstName = action.payload.body.firstName;
-      state.lastName = action.payload.body.lastName;
-      state.id = action.payload.body.id;
+      const { email, firstName, lastName, id } = action.payload.body || {};
+      state.email = email || null;
+      state.firstName = firstName || null;
+      state.lastName = lastName || null;
+      state.id = id || null;
       state.error = null;
     },
     userUpdateFail: (state, action) => {
-      state.email = action.payload.body.email;
-      state.firstName = action.payload.body.firstName;
-      state.lastName = action.payload.body.lastName;
-      state.id = action.payload.body.id;
-      state.error = action.payload.message;
+      const { email, firstName, lastName, id, message } =
+        action.payload.body || {};
+      state.email = email || null;
+      state.firstName = firstName || null;
+      state.lastName = lastName || null;
+      state.id = id || null;
+      state.error = message || null;
     },
   },
 });

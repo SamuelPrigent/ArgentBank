@@ -47,7 +47,7 @@ const login = (email, password, rememberMe) => (dispatch) => {
  * Get user profile
  * @param { String } token
  */
-const userProfile = (value_token) => (dispatch) => {
+const userProfile = (value_token, navigate) => (dispatch) => {
   const token =
     localStorage.getItem("token") !== null
       ? localStorage.getItem("token")
@@ -72,7 +72,10 @@ const userProfile = (value_token) => (dispatch) => {
         localStorage.removeItem("token");
         sessionStorage.clear();
         dispatch(logoutSuccess());
-        dispatch(userLogout());
+        // redirection
+        if (navigate) {
+          navigate("/");
+        }
       }
     });
 };
@@ -102,6 +105,12 @@ const updateProfile = (firstName, lastName, value_token) => (dispatch) => {
     })
     .catch((err) => {
       dispatch(userUpdateFail(err.response));
+      if (err.response.data.status === 401) {
+        // if 401 error with token we remove it and logout
+        localStorage.removeItem("token");
+        sessionStorage.clear();
+        dispatch(logoutSuccess());
+      }
     });
 };
 

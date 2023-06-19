@@ -32,18 +32,16 @@ function Profile() {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  // dispatch(auth_service.userProfile(token));
 
-  // redirection if no token (redirection disable for TESTING)
+  // redirection if no token
   useEffect(() => {
     if (token === null) {
-      // Redirige sur "/" lors du logout
       navigate("/");
       sessionStorage.clear();
-      // console.log("error no token ?");
     } else {
-      // recup les infos et les place dans le state
-      dispatch(auth_service.userProfile(token));
+      // get user information
+      // navigate in params allow us to navigate if error 401
+      dispatch(auth_service.userProfile(token, navigate));
     }
   }, [token, navigate, dispatch]);
 
