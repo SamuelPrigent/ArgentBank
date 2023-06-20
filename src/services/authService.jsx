@@ -86,33 +86,38 @@ const userProfile = (value_token, navigate) => (dispatch) => {
  * @param { String } lastName
  * @param { String } token
  */
-const updateProfile = (firstName, lastName, value_token) => (dispatch) => {
-  const token =
-    localStorage.getItem("token") !== null
-      ? localStorage.getItem("token")
-      : sessionStorage.getItem("token") !== null
-      ? sessionStorage.getItem("token")
-      : value_token;
+const updateProfile =
+  (firstName, lastName, value_token, navigate) => (dispatch) => {
+    const token =
+      localStorage.getItem("token") !== null
+        ? localStorage.getItem("token")
+        : sessionStorage.getItem("token") !== null
+        ? sessionStorage.getItem("token")
+        : value_token;
 
-  axios
-    .put(
-      BASE_URL + "/user/profile",
-      { firstName: firstName, lastName: lastName },
-      { headers: { Authorization: `Bearer ${token}` } }
-    )
-    .then((res) => {
-      dispatch(userUpdateSuccess(res.data));
-    })
-    .catch((err) => {
-      dispatch(userUpdateFail(err.response));
-      if (err.response.data.status === 401) {
-        // if 401 error with token we remove it and logout
-        localStorage.removeItem("token");
-        sessionStorage.clear();
-        dispatch(logoutSuccess());
-      }
-    });
-};
+    axios
+      .put(
+        BASE_URL + "/user/profile",
+        { firstName: firstName, lastName: lastName },
+        { headers: { Authorization: `Bearer ${token}` } }
+      )
+      .then((res) => {
+        dispatch(userUpdateSuccess(res.data));
+      })
+      .catch((err) => {
+        dispatch(userUpdateFail(err.response));
+        if (err.response.data.status === 401) {
+          // if 401 error with token we remove it and logout
+          localStorage.removeItem("token");
+          sessionStorage.clear();
+          dispatch(logoutSuccess());
+          // redirection
+          if (navigate) {
+            navigate("/");
+          }
+        }
+      });
+  };
 
 /**
  * Logout function

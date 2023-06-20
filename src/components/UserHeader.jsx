@@ -3,6 +3,8 @@ import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import auth_service from "../services/authService.jsx";
 import PropTypes from "prop-types";
+// TEST
+import { useNavigate } from "react-router-dom";
 
 /**
  * Creates header component
@@ -10,8 +12,8 @@ import PropTypes from "prop-types";
  */
 function UserHeader() {
   // token
-  const token = useSelector((state) => state.login.token);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // Pouvait être déplacé en tant que propos dans user mais ct pas le Pb ???
   const firstName = useSelector((state) => state.user.firstName);
@@ -19,11 +21,20 @@ function UserHeader() {
   const [edit, showEdit] = useState(false);
   const [newFirstName, setFirstName] = useState("");
   const [newLastName, setLastName] = useState("");
+  // const token = useSelector((state) => state.login.token); // if i want to use token of redux
 
   // update profile action
   const submit = (e) => {
+    const token = sessionStorage.getItem("token")
+      ? null
+      : localStorage.getItem("token")
+      ? null
+      : null;
+
     e.preventDefault();
-    dispatch(auth_service.updateProfile(newFirstName, newLastName, token));
+    dispatch(
+      auth_service.updateProfile(newFirstName, newLastName, token, navigate)
+    );
     showEdit(false);
   };
 

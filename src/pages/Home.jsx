@@ -13,18 +13,43 @@ import auth_service from "../services/authService.jsx";
 
 function Home() {
   document.title = "Home - Argent Bank";
-  const navigate = useNavigate();
-  const token = useSelector((state) => state.login.token);
-  const logoClick = useSelector((state) => state.login.logoClick);
-  const dispatch = useDispatch();
-  // Refresh Nav
-  useEffect(() => {
-    // (je ne vérifie pas ici s'il est dans le localStorage que je check uniquement sur la page login)
-    if (token !== null || sessionStorage.getItem("token") !== null) {
-      dispatch(auth_service.userProfile(token));
+
+  // Search token
+  const token = useSelector((state) => {
+    // if token in Redux
+    if (state.login.token) {
+      const stateToken = state.login;
+      // console.log(stateToken);
+      return stateToken;
     }
-    //
-  }, [token, navigate, logoClick, dispatch]);
+    // if token in Local
+    const localStorageToken = localStorage.getItem("token");
+    if (localStorageToken !== null) {
+      return localStorageToken;
+    }
+    // if token in Local
+    const sessionStorageToken = sessionStorage.getItem("token");
+    if (sessionStorageToken !== null) {
+      return sessionStorageToken;
+    }
+    return null;
+  });
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  // logout + redirection if no token or error 401
+  useEffect(() => {
+    if (token === null) {
+      // refresh Nav via logout
+      dispatch(auth_service.logout());
+    }
+    if (token !== null) {
+      // navigate in params allow us to navigate if error 401
+      dispatch(auth_service.userProfile(token, navigate));
+    }
+  }, [token, navigate, dispatch]);
+  // test a method without token maj
 
   return (
     <div className="body">
