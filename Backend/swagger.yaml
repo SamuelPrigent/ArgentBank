@@ -8,12 +8,14 @@ host: localhost:3001
 basePath: /api/v1
 schemes:
   - http
+  ## path
 paths:
+  # path > login
   /user/login:
     post:
       tags:
         - User Module
-      summary: Login
+      summary: Connection
       description: API for Login
       parameters:
         - in: body
@@ -25,19 +27,20 @@ paths:
       produces:
         - application/json
       responses:
-        "200":
+        200:
           description: Login Successfully
           schema:
             $ref: "#/definitions/LoginResponse"
-        "400":
+        400:
           description: Invalid Fields
-        "500":
+        500:
           description: Internal Server Error
+  # path > sign up
   /user/signup:
     post:
       tags:
         - User Module
-      summary: Signup
+      summary: Create a user account
       description: API for Signup
       parameters:
         - in: body
@@ -49,15 +52,17 @@ paths:
       produces:
         - application/json
       responses:
-        "200":
+        200:
           description: Signup Successfully
           schema:
             $ref: "#/definitions/ApiResponse"
-        "400":
+        400:
           description: Invalid Fields
-        "500":
+        500:
           description: Internal Server Error
+  # path > profile
   /user/profile:
+    # profile.post
     post:
       security:
         - Bearer: []
@@ -73,14 +78,15 @@ paths:
       produces:
         - application/json
       responses:
-        "200":
+        200:
           description: User profile retrieved successully
           schema:
             $ref: "#/definitions/ApiResponse"
-        "400":
+        400:
           description: Invalid Fields
-        "500":
+        500:
           description: Internal Server Error
+    # profile.put
     put:
       security:
         - Bearer: []
@@ -102,20 +108,164 @@ paths:
       produces:
         - application/json
       responses:
-        "200":
+        200:
           description: User profile retrieved successully
           schema:
             $ref: "#/definitions/ApiResponse"
-        "400":
+        400:
           description: Invalid Fields
-        "500":
+        500:
           description: Internal Server Error
+  # paths for transactions of user
+  /users/{userId}/transactions:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - Transactions
+      summary: Get all transactions of the user
+      description: Returns a list of transactions
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: Authorization
+          description: Attach Bearer JWT token
+        - in: path
+          name: accountId
+          description: Account id
+          required: true
+          type: string
+      responses:
+        200:
+          description: Transactions retrieved successfully
+          schema:
+            $ref: "#/definitions/Transactions"
+        401:
+          description: Authorization error
+        404:
+          description: User doenst exist
+        500:
+          description: Internal Server Error
+  # paths for one transaction of user
+  /users/{userId}/transactions/{transactionId}:
+    # tractionsId.get
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - Transactions
+      summary: Gets single user transaction
+      description: Return the specific transaction information
+      produces:
+        - "application/json"
+      parameters:
+        - in: header
+          name: Authorization
+          description: Attach Bearer JWT token
+        - in: path
+          name: accountId
+          description: Account id
+          required: true
+          type: string
+        - in: path
+          name: transactionId
+          description: Transaction id
+          required: true
+          type: string
+      responses:
+        200:
+          description: Transaction retrieved successfully
+          schema:
+            $ref: "#/definitions/Transaction"
+        401:
+          description: Authorization error
+        404:
+          description: Transaction does not exist
+        500:
+          description: Internal Server Error
+    # transactionsId.put
+    put:
+      security:
+        - Bearer: []
+      tags:
+        - Transactions
+      summary: Edit a transaction of user
+      description: Edit a transaction of user
+      produces:
+        - "application/json"
+      parameters:
+        - in: header
+          name: Authorization
+          description: Attach Bearer JWT token
+        - in: path
+          name: accountId
+          description: Account id
+          required: true
+          type: string
+        - in: path
+          name: transactionId
+          description: Transaction id
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: Update transaction attribute
+          required: true
+          schema:
+            $ref: "#/definitions/Transaction"
+      responses:
+        200:
+          description: Successfully updated transaction informations
+          schema:
+            $ref: "#/definitions/Transaction"
+        401:
+          description: Authorization error
+        404:
+          description: Transaction does not exist
+        500:
+          description: Internal Server Error
+    # transactionsId.delete
+    delete:
+      security:
+        - Bearer: []
+      tags:
+        - Transactions
+      summary: Delete a transaction of user
+      description: Delete a transaction of user
+      produces:
+        - "application/json"
+      parameters:
+        - in: header
+          name: Authorization
+          description: Attach Bearer JWT token
+        - in: path
+          name: accountId
+          description: Account id
+          required: true
+          type: string
+        - in: path
+          name: transactionId
+          description: Transaction id
+          required: true
+          type: string
+      responses:
+        200:
+          description: Successfully deleted transaction
+        401:
+          description: Authorization error
+        404:
+          description: Transaction does not exist
+        500:
+          description: Internal Server Error
+## security definitions (schema)
 securityDefinitions:
   Bearer:
     type: apiKey
     name: Authorization
     in: header
 definitions:
+  # security def.. > user
   User:
     properties:
       email:
@@ -130,6 +280,7 @@ definitions:
       lastName:
         type: string
         description: user last name
+  # security def.. > login
   Login:
     properties:
       email:
@@ -138,6 +289,7 @@ definitions:
       password:
         type: string
         description: user password
+  # security def.. > api response
   ApiResponse:
     type: object
     properties:
@@ -152,11 +304,13 @@ definitions:
             type: string
           email:
             type: string
+  # security def.. > login response
   LoginResponse:
     type: object
     properties:
       token:
         type: string
+  # security def.. > user profile
   UserProfile:
     type: object
     properties:
@@ -164,3 +318,45 @@ definitions:
         type: string
       lastName:
         type: string
+  # security def.. > transaction
+  Transaction:
+    type: object
+    properties:
+      amount:
+        type: integer
+        format: int64
+      currency:
+        type: string
+      description:
+        type: string
+      date:
+        type: string
+      category:
+        type: string
+      note:
+        type: string
+    example:
+      amount: 350
+      currency: USD
+      description: Payment of Designers
+      date: "2023-07-12"
+      category: Expenses
+      note: Design for SportAnalytics
+  # security def.. > transactions
+  Transactions:
+    type: array
+    items:
+      $ref: "#/definitions/Transaction"
+    example:
+      - amount: 350
+        currency: USD
+        description: Payment of Designers
+        date: "2023-07-12"
+        category: Expenses
+        note: Design for SportAnalytics
+      - amount: 470
+        currency: USD
+        description: Monitor for new employees
+        date: "2023-08-14"
+        category: Expenses
+        note: New frontend developpers
