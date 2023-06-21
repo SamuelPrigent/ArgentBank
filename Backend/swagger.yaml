@@ -123,8 +123,8 @@ paths:
         - Bearer: []
       tags:
         - Transactions
-      summary: Get all transactions of the user of the month
-      description: Returns a list of transactions of the user for the actual month
+      summary: Get all user transactions for the current month
+      description: Returns a list of user transactions for the actual month
       produces:
         - application/json
       parameters:
