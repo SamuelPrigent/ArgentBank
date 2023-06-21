@@ -123,8 +123,8 @@ paths:
         - Bearer: []
       tags:
         - Transactions
-      summary: Get all transactions of the user
-      description: Returns a list of transactions
+      summary: Get all transactions of the user of the month
+      description: Returns a list of transactions of the user for the actual month
       produces:
         - application/json
       parameters:
@@ -157,7 +157,7 @@ paths:
         - Bearer: []
       tags:
         - Transactions
-      summary: Gets single user transaction
+      summary: Gets informations of one transaction of the user
       description: Return the specific transaction information
       produces:
         - "application/json"
@@ -196,8 +196,8 @@ paths:
         - Bearer: []
       tags:
         - Transactions
-      summary: Edit a transaction of user
-      description: Edit a transaction of user
+      summary: Edit a transaction of the user
+      description: Edit a transaction of the user, by changing the description, the note or attribute a category.
       produces:
         - "application/json"
       parameters:
@@ -219,7 +219,7 @@ paths:
           description: Update transaction attribute
           required: true
           schema:
-            $ref: "#/definitions/Transaction"
+            $ref: "#/definitions/UpdateTransaction"
       responses:
         200:
           description: Successfully updated transaction informations
@@ -236,42 +236,42 @@ paths:
         500:
           description: Internal Server Error
     # transactionsId.delete
-    delete:
-      security:
-        - Bearer: []
-      tags:
-        - Transactions
-      summary: Delete a transaction of user
-      description: Delete a transaction of user
-      produces:
-        - "application/json"
-      parameters:
-        - in: header
-          name: Authorization
-          description: Attach Bearer JWT token
-        - in: path
-          name: accountId
-          description: Account id
-          required: true
-          type: string
-        - in: path
-          name: transactionId
-          description: Transaction id
-          required: true
-          type: string
-      responses:
-        200:
-          description: Successfully deleted transaction
-        401:
-          description: Authorization error
-        403:
-          description: Forbidden you can not delete this transaction
-        404:
-          description: |
-            - User doesn't exist
-            - Transaction doesn't exist
-        500:
-          description: Internal Server Error
+    # delete:
+    #   security:
+    #     - Bearer: []
+    #   tags:
+    #     - Transactions
+    #   summary: Delete a transaction of user
+    #   description: Delete a transaction of user
+    #   produces:
+    #     - "application/json"
+    #   parameters:
+    #     - in: header
+    #       name: Authorization
+    #       description: Attach Bearer JWT token
+    #     - in: path
+    #       name: accountId
+    #       description: Account id
+    #       required: true
+    #       type: string
+    #     - in: path
+    #       name: transactionId
+    #       description: Transaction id
+    #       required: true
+    #       type: string
+    #   responses:
+    #     200:
+    #       description: Successfully deleted transaction
+    #     401:
+    #       description: Authorization error
+    #     403:
+    #       description: Forbidden you can not delete this transaction
+    #     404:
+    #       description: |
+    #         - User doesn't exist
+    #         - Transaction doesn't exist
+    #     500:
+    #       description: Internal Server Error
 ## security definitions (schema)
 securityDefinitions:
   Bearer:
@@ -341,21 +341,21 @@ definitions:
         format: int64
       currency:
         type: string
-      description:
-        type: string
       date:
         type: string
-      category:
+      description:
         type: string
       note:
+        type: string
+      category:
         type: string
     example:
       amount: 350
       currency: USD
-      description: Payment of Designers
       date: "2023-07-12"
-      category: Expenses
+      description: Payment of John Doe
       note: Design for SportAnalytics
+      category: Expenses
   # security def.. > transactions
   Transactions:
     type: array
@@ -364,13 +364,23 @@ definitions:
     example:
       - amount: 350
         currency: USD
-        description: Payment of Designers
         date: "2023-07-12"
+        description: Payment of Designers
+        note: Payment of Design for SportAnalytics
         category: Expenses
-        note: Design for SportAnalytics
       - amount: 470
         currency: USD
-        description: Monitor for new employees
         date: "2023-08-14"
-        category: Expenses
+        description: Monitor for new employees
         note: New frontend developpers
+        category: Expenses
+  # security def.. > update transaction
+  UpdateTransaction:
+    type: object
+    properties:
+      description:
+        type: string
+      note:
+        type: string
+      category:
+        type: string
