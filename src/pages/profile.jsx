@@ -11,6 +11,10 @@ import Nav from "../components/nav.jsx";
 // import Cookies from "js-cookie";
 
 function Profile() {
+  document.title = "Profile - Argent Bank";
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   // SEARCH TOKEN COOKIE METHOD
   // const getToken = () => {
   //   // cookie token
@@ -34,10 +38,6 @@ function Profile() {
   // };
   // // get token via function
   // const token = getToken();
-
-  document.title = "Profile - Argent Bank";
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   useEffect(() => {
     //  redirection if no token or error 401
