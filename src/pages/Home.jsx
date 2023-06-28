@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 // assets
 import iconChat from "../assets/icon-chat.png";
 import iconMoney from "../assets/icon-money.png";
@@ -10,24 +9,51 @@ import Nav from "../components/nav.jsx";
 // Refresh Nav
 import { useDispatch } from "react-redux";
 import auth_service from "../services/authService.jsx";
+// get token via redux + storage method
+import { useSelector } from "react-redux";
+// get token via cookie
+// import Cookies from "js-cookie";
 
 function Home() {
   document.title = "Home - Argent Bank";
 
-  // Search token
+  // SEARCH TOKEN COOKIE METHOD
+  // const getToken = () => {
+  //   // cookie token
+  //   const cookieToken = Cookies.get("token");
+  //   if (cookieToken !== "undefined") {
+  //     // console.log("Cookie token", cookieToken);
+  //     return cookieToken;
+  //   }
+  //   // token localStorage
+  //   const localStorageToken = localStorage.getItem("token");
+  //   if (localStorageToken !== null) {
+  //     return localStorageToken;
+  //   }
+  //   // if token in sessionStorage
+  //   const sessionStorageToken = sessionStorage.getItem("token");
+  //   if (sessionStorageToken !== null) {
+  //     return sessionStorageToken;
+  //   }
+  //   return null;
+  // };
+  // // get token via function
+  // const token = getToken();
+
+  // Search token - Classic method
   const token = useSelector((state) => {
-    // if token in Redux
+    // token Redux
     if (state.login.token) {
       const stateToken = state.login;
       // console.log(stateToken);
       return stateToken;
     }
-    // if token in Local
+    // token localStorage
     const localStorageToken = localStorage.getItem("token");
     if (localStorageToken !== null) {
       return localStorageToken;
     }
-    // if token in Local
+    // if token in sessionStorage
     const sessionStorageToken = sessionStorage.getItem("token");
     if (sessionStorageToken !== null) {
       return sessionStorageToken;
@@ -35,16 +61,18 @@ function Home() {
     return null;
   });
 
+  //
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   // logout + redirection if no token or error 401
   useEffect(() => {
-    if (token === null) {
+    // functionnement normal
+    if (token === null || token === undefined) {
       // refresh Nav via logout
       dispatch(auth_service.logout());
     }
-    if (token !== null) {
+    if (token !== null && token !== undefined) {
       // navigate in params allow us to navigate if error 401
       dispatch(auth_service.userProfile(token, navigate));
     }

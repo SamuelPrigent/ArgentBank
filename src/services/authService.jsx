@@ -15,6 +15,9 @@ import {
 
 const BASE_URL = "http://localhost:3001/api/v1";
 
+// if i want to use cookie for token storage
+// import Cookies from "js-cookie";
+
 /**
  * Login function
  * @param { String } email
@@ -26,14 +29,18 @@ const login = (email, password, rememberMe) => (dispatch) => {
   axios
     .post(BASE_URL + "/user/login", { email, password })
     .then((response) => {
+      const { token } = response.data.body;
+      // in Cookie
+      // Cookies.set("token", token);
+      // in Storage
       if (rememberMe) {
+        localStorage.setItem("token", token);
         // in local storage if checked + session storage
         // si je ferme le navigateur je reste connecté tant que le token n'expire pas
-        localStorage.setItem("token", response.data.body.token);
       } else {
+        sessionStorage.setItem("token", token);
         // session storage if not checked
         // lorsque je ferme le navigateur je ne suis plus connecté
-        sessionStorage.setItem("token", response.data.body.token);
       }
       dispatch(loginSuccess(response.data));
       return response.data;
@@ -72,6 +79,7 @@ const userProfile = (value_token, navigate) => (dispatch) => {
         localStorage.removeItem("token");
         sessionStorage.clear();
         dispatch(logoutSuccess());
+        // Cookies.remove("token"); // cookies method
         // redirection
         if (navigate) {
           navigate("/");
@@ -111,6 +119,7 @@ const updateProfile =
           localStorage.removeItem("token");
           sessionStorage.clear();
           dispatch(logoutSuccess());
+          // Cookies.remove("token"); // cookies method
           // redirection
           if (navigate) {
             navigate("/");
@@ -127,6 +136,7 @@ const logout = () => (dispatch) => {
   sessionStorage.clear();
   dispatch(userLogout());
   dispatch(logoutSuccess());
+  // Cookies.remove("token"); // remove token in cookies
 };
 
 // export auth_service

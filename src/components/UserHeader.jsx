@@ -21,7 +21,6 @@ function UserHeader() {
   const [edit, showEdit] = useState(false);
   const [newFirstName, setFirstName] = useState("");
   const [newLastName, setLastName] = useState("");
-  // const token = useSelector((state) => state.login.token); // if i want to use token of redux
 
   // update profile action
   const submit = (e) => {

@@ -1,24 +1,46 @@
 // react
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-// reduc
-// import { useSelector, useDispatch } from "react-redux";
 import { useDispatch } from "react-redux";
-
 // Auth Service
 import auth_service from "../services/authService.jsx";
 // components
 import UserHeader from "../components/UserHeader.jsx";
 import Nav from "../components/nav.jsx";
+// cookie
+// import Cookies from "js-cookie";
 
 function Profile() {
-  document.title = "Profile - Argent Bank";
+  // SEARCH TOKEN COOKIE METHOD
+  // const getToken = () => {
+  //   // cookie token
+  //   const cookieToken = Cookies.get("token");
+  //   if (cookieToken !== "undefined") {
+  //     // console.log("Cookie token", cookieToken);
+  //     console.log("cookieToken");
+  //     return cookieToken;
+  //   }
+  //   // token localStorage
+  //   const localStorageToken = localStorage.getItem("token");
+  //   if (localStorageToken !== null) {
+  //     return localStorageToken;
+  //   }
+  //   // if token in sessionStorage
+  //   const sessionStorageToken = sessionStorage.getItem("token");
+  //   if (sessionStorageToken !== null) {
+  //     return sessionStorageToken;
+  //   }
+  //   return null;
+  // };
+  // // get token via function
+  // const token = getToken();
 
+  document.title = "Profile - Argent Bank";
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // redirection if no token or error 401
   useEffect(() => {
+    //  redirection if no token or error 401
     const token = sessionStorage.getItem("token")
       ? null
       : localStorage.getItem("token")

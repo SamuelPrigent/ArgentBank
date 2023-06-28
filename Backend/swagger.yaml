@@ -118,7 +118,7 @@ paths:
           description: Internal Server Error
   # paths for transactions of user
   /users/{userId}/transactions:
-    get:
+    post:
       security:
         - Bearer: []
       tags:
@@ -132,8 +132,8 @@ paths:
           name: Authorization
           description: Attach Bearer JWT token
         - in: path
-          name: accountId
-          description: Account id
+          name: userId
+          description: userId
           required: true
           type: string
       responses:
@@ -151,8 +151,8 @@ paths:
           description: Internal Server Error
   # paths for one transaction of user
   /users/{userId}/transactions/{transactionId}:
-    # tractionsId.get
-    get:
+    # tractionsId.post (get)
+    post:
       security:
         - Bearer: []
       tags:
@@ -166,8 +166,8 @@ paths:
           name: Authorization
           description: Attach Bearer JWT token
         - in: path
-          name: accountId
-          description: Account id
+          name: userId
+          description: user id
           required: true
           type: string
         - in: path
@@ -205,8 +205,8 @@ paths:
           name: Authorization
           description: Attach Bearer JWT token
         - in: path
-          name: accountId
-          description: Account id
+          name: userId
+          description: user id
           required: true
           type: string
         - in: path
